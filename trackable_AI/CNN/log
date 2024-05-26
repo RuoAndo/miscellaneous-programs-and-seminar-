@@ -1,0 +1,107 @@
+init dataset...
+totalSampleSize:50000 totalTestSize:10000
+create BatchData for training
+create BatchData for test
+create model...
+start training ...
+SoftmaxCrossEntropy:Grad:-0.981924
+SoftmaxCrossEntropy:Grad:1.95742
+SoftmaxCrossEntropy:Grad:-0.55163
+SoftmaxCrossEntropy:Grad:0.0184398
+SoftmaxCrossEntropy:Grad:-0.169408
+SoftmaxCrossEntropy:Grad:-0.128839
+SoftmaxCrossEntropy:Grad:0.102697
+SoftmaxCrossEntropy:Grad:-0.128055
+SoftmaxCrossEntropy:Grad:0.0112173
+SoftmaxCrossEntropy:Grad:0.0037741
+10 loss:2.46736 accurecy:10.1%
+SoftmaxCrossEntropy:Grad:-0.0175669
+SoftmaxCrossEntropy:Grad:0.0269196
+SoftmaxCrossEntropy:Grad:-0.00929827
+SoftmaxCrossEntropy:Grad:0.0658615
+SoftmaxCrossEntropy:Grad:0.0705564
+SoftmaxCrossEntropy:Grad:0.174536
+SoftmaxCrossEntropy:Grad:0.185518
+SoftmaxCrossEntropy:Grad:-0.159447
+SoftmaxCrossEntropy:Grad:-0.357949
+SoftmaxCrossEntropy:Grad:-0.236596
+20 loss:2.27782 accurecy:13.1%
+SoftmaxCrossEntropy:Grad:-0.0708249
+SoftmaxCrossEntropy:Grad:-0.128368
+SoftmaxCrossEntropy:Grad:-0.117096
+SoftmaxCrossEntropy:Grad:-0.159
+SoftmaxCrossEntropy:Grad:0.390518
+SoftmaxCrossEntropy:Grad:0.163207
+SoftmaxCrossEntropy:Grad:0.0962572
+SoftmaxCrossEntropy:Grad:0.0873237
+SoftmaxCrossEntropy:Grad:-0.174768
+SoftmaxCrossEntropy:Grad:0.20963
+30 loss:2.24831 accurecy:14.9%
+SoftmaxCrossEntropy:Grad:-0.087187
+SoftmaxCrossEntropy:Grad:-0.0382749
+SoftmaxCrossEntropy:Grad:0.803072
+SoftmaxCrossEntropy:Grad:0.085273
+SoftmaxCrossEntropy:Grad:-0.037913
+SoftmaxCrossEntropy:Grad:0.230463
+SoftmaxCrossEntropy:Grad:0.419539
+SoftmaxCrossEntropy:Grad:-0.387951
+SoftmaxCrossEntropy:Grad:1.04362
+SoftmaxCrossEntropy:Grad:0.121404
+40 loss:2.17291 accurecy:20.4%
+SoftmaxCrossEntropy:Grad:-0.508975
+SoftmaxCrossEntropy:Grad:-0.838271
+SoftmaxCrossEntropy:Grad:0.859168
+SoftmaxCrossEntropy:Grad:1.44818
+SoftmaxCrossEntropy:Grad:-2.19912
+SoftmaxCrossEntropy:Grad:1.37831
+SoftmaxCrossEntropy:Grad:-1.75567
+SoftmaxCrossEntropy:Grad:-2.40241
+SoftmaxCrossEntropy:Grad:-1.83943
+SoftmaxCrossEntropy:Grad:1.89766
+50 loss:2.06762 accurecy:21.5%
+SoftmaxCrossEntropy:Grad:-0.0139984
+SoftmaxCrossEntropy:Grad:-0.757766
+SoftmaxCrossEntropy:Grad:-1.26243
+SoftmaxCrossEntropy:Grad:1.37269
+SoftmaxCrossEntropy:Grad:-0.230134
+SoftmaxCrossEntropy:Grad:-0.526559
+SoftmaxCrossEntropy:Grad:-1.74375
+SoftmaxCrossEntropy:Grad:-0.143241
+SoftmaxCrossEntropy:Grad:-1.09529
+SoftmaxCrossEntropy:Grad:-1.21973
+60 loss:2.05071 accurecy:25.2%
+SoftmaxCrossEntropy:Grad:2.03937
+SoftmaxCrossEntropy:Grad:1.7027
+SoftmaxCrossEntropy:Grad:0.0826826
+SoftmaxCrossEntropy:Grad:-0.923782
+SoftmaxCrossEntropy:Grad:-1.08662
+SoftmaxCrossEntropy:Grad:0.109443
+SoftmaxCrossEntropy:Grad:-0.383619
+SoftmaxCrossEntropy:Grad:-0.986949
+SoftmaxCrossEntropy:Grad:-0.392376
+SoftmaxCrossEntropy:Grad:-0.147347
+70 loss:1.93181 accurecy:28.1%
+SoftmaxCrossEntropy:Grad:-1.88755
+SoftmaxCrossEntropy:Grad:1.11046
+SoftmaxCrossEntropy:Grad:-1.47804
+SoftmaxCrossEntropy:Grad:-0.813068
+SoftmaxCrossEntropy:Grad:2.01219
+SoftmaxCrossEntropy:Grad:1.34332
+SoftmaxCrossEntropy:Grad:1.15995
+SoftmaxCrossEntropy:Grad:0.596251
+SoftmaxCrossEntropy:Grad:-2.27245
+SoftmaxCrossEntropy:Grad:-1.65837
+80 loss:1.87963 accurecy:32.6%
+SoftmaxCrossEntropy:Grad:0.0175439
+SoftmaxCrossEntropy:Grad:1.05828
+SoftmaxCrossEntropy:Grad:-0.75679
+SoftmaxCrossEntropy:Grad:-0.704308
+SoftmaxCrossEntropy:Grad:1.12868
+SoftmaxCrossEntropy:Grad:-0.571729
+SoftmaxCrossEntropy:Grad:-0.364929
+SoftmaxCrossEntropy:Grad:-2.2888
+SoftmaxCrossEntropy:Grad:0.41758
+SoftmaxCrossEntropy:Grad:-0.860238
+90 loss:1.81666 accurecy:32.2%
+SoftmaxCrossEntropy:Grad:-0.518941
+SoftmaxCrossEntropy:Grad:-0.346195

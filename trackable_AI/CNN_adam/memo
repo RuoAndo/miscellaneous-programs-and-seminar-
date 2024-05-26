@@ -1,0 +1,9 @@
+cat log | grep -v test | grep -v ecpoch | cut -d ":" -f 3 | grep "%" | tr -d "%" > acc2cat log | cut -d ":" -f 3 | grep "%" | tr -d "%" > acc
+cat log | cut -d ":" -f 3 | grep -v test | grep -v ecpoch | grep "%" | tr -d "%" > acc 
+cat log | grep -v test | grep -v ecpoch | cut -d ":" -f 3 | grep "%" | tr -d "%" > acc
+
+cat log | grep -v test | grep -v ecpoch | cut -d ":" -f 3 | grep "%" | tr -d "%" > acc2
+
+cat log | grep -v time | grep -v saving | grep -v test | grep -v ecpoch | cut -d ":" -f 2 | cut -d " " -f 1 > loss1
+
+

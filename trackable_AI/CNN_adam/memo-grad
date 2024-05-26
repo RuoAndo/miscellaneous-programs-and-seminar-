@@ -1,0 +1,1 @@
+ cat log | cut -d ":" -f 3 | grep -v "%"
