@@ -1,0 +1,111 @@
+  1: # coding: utf-8
+  2: 
+  3: # **[MSE-01]** モジュールをインポートして、乱数のシードを設定します。
+  4: 
+  5: # In[1]:
+  6: 
+  7: 
+  8: import tensorflow as tf
+  9: import numpy as np
+ 10: import matplotlib.pyplot as plt
+ 11: from tensorflow.examples.tutorials.mnist import input_data
+ 12: 
+ 13: np.random.seed(20160604)
+ 14: 
+ 15: 
+ 16: # **[MSE-02]** MNISTのデータセットを用意します。
+ 17: 
+ 18: # In[2]:
+ 19: 
+ 20: 
+ 21: mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+ 22: 
+ 23: 
+ 24: # **[MSE-03]** ソフトマックス関数による確率 p の計算式を用意します。
+ 25: 
+ 26: # In[3]:
+ 27: 
+ 28: 
+ 29: x = tf.placeholder(tf.float32, [None, 784])
+ 30: w = tf.Variable(tf.zeros([784, 10]))
+ 31: w0 = tf.Variable(tf.zeros([10]))
+ 32: f = tf.matmul(x, w) + w0
+ 33: p = tf.nn.softmax(f)
+ 34: 
+ 35: 
+ 36: # **[MSE-04]** 誤差関数 loss とトレーニングアルゴリズム train_step を用意します。
+ 37: 
+ 38: # In[4]:
+ 39: 
+ 40: 
+ 41: t = tf.placeholder(tf.float32, [None, 10])
+ 42: loss = -tf.reduce_sum(t * tf.log(p))
+ 43: train_step = tf.train.AdamOptimizer().minimize(loss)
+ 44: 
+ 45: 
+ 46: # **[MSE-05]** 正解率 accuracy を定義します。
+ 47: 
+ 48: # In[5]:
+ 49: 
+ 50: 
+ 51: correct_prediction = tf.equal(tf.argmax(p, 1), tf.argmax(t, 1))
+ 52: accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+ 53: 
+ 54: 
+ 55: # **[MSE-06]** セッションを用意して、Variableを初期化します。
+ 56: 
+ 57: # In[6]:
+ 58: 
+ 59: 
+ 60: sess = tf.Session()
+ 61: sess.run(tf.initialize_all_variables())
+ 62: 
+ 63: 
+ 64: # **[MSE-07]** パラメーターの最適化を2000回繰り返します。
+ 65: # 
+ 66: # 1回の処理において、トレーニングセットから取り出した100個のデータを用いて、勾配降下法を適用します。
+ 67: # 
+ 68: # 最終的に、テストセットに対して約92%の正解率が得られます。
+ 69: 
+ 70: # In[7]:
+ 71: 
+ 72: 
+ 73: i = 0
+ 74: for _ in range(2000):
+ 75:     i += 1
+ 76:     batch_xs, batch_ts = mnist.train.next_batch(100)
+ 77:     sess.run(train_step, feed_dict={x: batch_xs, t: batch_ts})
+ 78:     if i % 100 == 0:
+ 79:         loss_val, acc_val = sess.run([loss, accuracy],
+ 80:             feed_dict={x:mnist.test.images, t: mnist.test.labels})
+ 81:         print ('Step: %d, Loss: %f, Accuracy: %f'
+ 82:                % (i, loss_val, acc_val))
+ 83: 
+ 84: 
+ 85: # **[MSE-08]** この時点のパラメーターを用いて、テストセットに対する予測を表示します。
+ 86: # 
+ 87: # ここでは、「０」?「９」の数字に対して、正解と不正解の例を３個ずつ表示します。
+ 88: 
+ 89: # In[8]:
+ 90: 
+ 91: 
+ 92: images, labels = mnist.test.images, mnist.test.labels
+ 93: p_val = sess.run(p, feed_dict={x:images, t: labels}) 
+ 94: 
+ 95: fig = plt.figure(figsize=(8,15))
+ 96: for i in range(10):                                                                                                                      
+ 97:     c = 1
+ 98:     for (image, label, pred) in zip(images, labels, p_val):
+ 99:         prediction, actual = np.argmax(pred), np.argmax(label)
+100:         if prediction != i:
+101:             continue
+102:         if (c < 4 and i == actual) or (c >= 4 and i != actual):
+103:             subplot = fig.add_subplot(10,6,i*6+c)
+104:             subplot.set_xticks([])
+105:             subplot.set_yticks([])
+106:             subplot.set_title('%d / %d' % (prediction, actual))
+107:             subplot.imshow(image.reshape((28,28)), vmin=0, vmax=1,
+108:                            cmap=plt.cm.gray_r, interpolation="nearest")
+109:             c += 1
+110:             if c > 6:
+111:                 break

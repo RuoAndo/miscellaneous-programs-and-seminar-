@@ -1,0 +1,58 @@
+set(binary_res).
+set(ur_res).
+set(factor).
+set(unit_deletion).
+set(para_from).
+set(para_into).
+set(dynamic_demod_all).
+set(back_demod).
+set(sos_queue).             
+
+set(lex_order_vars).
+set(lrpo).
+lex([c(x),a(x,x)]).
+
+assign(stats_level,4).
+% assign(pick_given_ratio,3).
+assign(max_seconds,20).
+assign(max_weight,10).
+assign(max_literals,3).
+assign(max_distinct_vars,2).
+
+list(usable).
+x = x.
+x = 1 | x = 2 | x = 3 | x = 4 | x = 5 | x = 6 | x = 7 | x = 8 | x = 9 | x = 10.
+-a(x,y) | a(y,x).
+-a(x,y) | -(c(x) = c(y)).
+
+c(1) = 1.
+c(2) = 2.
+
+a(1,2).              
+a(1,9).
+a(1,5).
+a(2,3).
+a(2,7).
+a(3,4).
+a(3,10).
+a(4,5).
+a(4,8).
+a(5,1).
+a(5,6).
+a(6,10).
+a(6,7).
+a(7,2).
+a(7,8).
+end_of_list.
+
+formula_list(sos).
+(all x (c(x) = 1 | c(x) = 2)).
+% -(all x (c(x) = 1 | c(x) = 2 | c(x) = 3)).
+end_of_list.
+
+weight_list(pick_and_purge).
+weight(a(c($(1)),$(1)),1000).
+weight(a($(1),c($(1))),1000).
+weight(a($(1),$(1)),1).
+weight(c(c($(1))),1000).
+end_of_list.

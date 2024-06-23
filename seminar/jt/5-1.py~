@@ -1,0 +1,49 @@
+# coding: utf-8
+
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.random import multivariate_normal, permutation
+import pandas as pd
+from pandas import DataFrame, Series
+
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+np.random.seed(20181204)
+tf.set_random_seed(20181204)
+
+def generate_Data_chunk(n, mu, var, t):
+    data = multivariate_normal(mu, np.eye(2)*var, n)
+    df = DataFrame(data, columns=['x1','x2'])
+    df['t'] = t
+    return df
+
+df0 = generate_Data_chunk(30, [-7,-7], 18, 1)
+df1 = generate_Data_chunk(30, [-7,7], 18, 0)
+df2 = generate_Data_chunk(30, [7,-7], 18, 0)
+df3 = generate_Data_chunk(30, [7,7], 18, 1)
+
+df = pd.concat([df0, df1, df2, df3], ignore_index=True)
+train_set = df.reindex(permutation(df.index)).reset_index(drop=True)
+
+train_set1 = train_set[train_set['t']==1]
+train_set2 = train_set[train_set['t']==0]
+
+fig = plt.figure(figsize=(6,6))
+subplot = fig.add_subplot(1,1,1)
+subplot.set_ylim([-15,15])
+subplot.set_xlim([-15,15])
+subplot.scatter(train_set1.x1, train_set1.x2, marker='x')
+subplot.scatter(train_set2.x1, train_set2.x2, marker='o')
+
+locations = []
+for x2 in np.linspace(-15,15,100):
+    for x1 in np.linspace(-15,15,100):
+        locations.append((x1,x2))
+p_vals = sess.run(p, feed_dict={x:locations})
+p_vals = p_vals.reshape((100,100))
+
+subplot.imshow(p_vals, origin='lower', extent=(-15,15,-15,15), cmap=plt.cm.gray_r, alpha=0.5)
+plt.show()
+

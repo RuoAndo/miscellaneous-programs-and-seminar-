@@ -1,0 +1,20 @@
+set(hyper_res).
+set(order_history).
+clear(print_kept).
+assign(max_given, 100).
+assign(stats_level, 1).
+
+list(usable).
+	P(i(x, i(y,x))).
+	P(i(i(x, i(y,z)), i(i(x,y), i(x,z)))).
+	P(i(i(n(x), n(y)), i(y,x))).
+end_of_list.
+
+list(sos).
+	-P(i(x,y)) | -P(x) | P(y).
+end_of_list.
+
+list(passive).
+	-P(i(a, n(n(a)))).
+end_of_list.
+

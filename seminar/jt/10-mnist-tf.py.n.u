@@ -1,0 +1,135 @@
+  1: # Introductory CNN Model: MNIST Digits
+  2: # ---------------------------------------
+  3: #
+  4: # In this example, we will download the MNIST handwritten
+  5: # digits and create a simple CNN network to predict the
+  6: # digit category (0-9)
+  7: 
+  8: alting_height * conv2_features
+  9: full1_weight = tf.Variable(tf.truncated_normal([full1_input_size, fully_connected_size1],
+ 10:                            stddev=0.1, dtype=tf.float32))
+ 11: full1_bias = tf.Variable(tf.truncated_normal([fully_connected_size1], stddev=0.1, dtype=tf.float32))
+ 12: full2_weight = tf.Variable(tf.truncated_normal([fully_connected_size1, target_size],
+ 13:                                                stddev=0.1, dtype=tf.float32))
+ 14: full2_bias = tf.Variable(tf.truncated_normal([target_size], stddev=0.1, dtype=tf.float32))
+ 15: 
+ 16: 
+ 17: # Initialize Model Operations
+ 18: def my_conv_net(conv_input_data):
+ 19:     # First Conv-ReLU-MaxPool Layer
+ 20:     conv1 = tf.nn.conv2d(conv_input_data, conv1_weight, strides=[1, 1, 1, 1], padding='SAME')
+ 21:     relu1 = tf.nn.relu(tf.nn.bias_add(conv1, conv1_bias))
+ 22:     max_pool1 = tf.nn.max_pool(relu1, ksize=[1, max_pool_size1, max_pool_size1, 1],
+ 23:                                strides=[1, max_pool_size1, max_pool_size1, 1], padding='SAME')
+ 24: 
+ 25:     # Second Conv-ReLU-MaxPool Layer
+ 26:     conv2 = tf.nn.conv2d(max_pool1, conv2_weight, strides=[1, 1, 1, 1], padding='SAME')
+ 27:     relu2 = tf.nn.relu(tf.nn.bias_add(conv2, conv2_bias))
+ 28:     max_pool2 = tf.nn.max_pool(relu2, ksize=[1, max_pool_size2, max_pool_size2, 1],
+ 29:                                strides=[1, max_pool_size2, max_pool_size2, 1], padding='SAME')
+ 30: 
+ 31:     # Transform Output into a 1xN layer for next fully connected layer
+ 32:     final_conv_shape = max_pool2.get_shape().as_list()
+ 33:     final_shape = final_conv_shape[1] * final_conv_shape[2] * final_conv_shape[3]
+ 34:     flat_output = tf.reshape(max_pool2, [final_conv_shape[0], final_shape])
+ 35: 
+ 36:     # First Fully Connected Layer
+ 37:     fully_connected1 = tf.nn.relu(tf.add(tf.matmul(flat_output, full1_weight), full1_bias))
+ 38: 
+ 39:     # Second Fully Connected Layer
+ 40:     final_model_output = tf.add(tf.matmul(fully_connected1, full2_weight), full2_bias)
+ 41:     
+ 42:     return final_model_output
+ 43: 
+ 44: model_output = my_conv_net(x_input)
+ 45: test_model_output = my_conv_net(eval_input)
+ 46: 
+ 47: # Declare Loss Function (softmax cross entropy)
+ 48: loss = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=model_output, labels=y_target))
+ 49: 
+ 50: # Create a prediction function
+ 51: prediction = tf.nn.softmax(model_output)
+ 52: test_prediction = tf.nn.softmax(test_model_output)
+ 53: 
+ 54: 
+ 55: # Create accuracy function
+ 56: def get_accuracy(logits, targets):
+ 57:     batch_predictions = np.argmax(logits, axis=1)
+ 58:     num_correct = np.sum(np.equal(batch_predictions, targets))
+ 59:     return 100. * num_correct/batch_predictions.shape[0]
+ 60: 
+ 61: # Create an optimizer
+ 62: my_optimizer = tf.train.MomentumOptimizer(learning_rate, 0.9)
+ 63: train_step = my_optimizer.minimize(loss)
+ 64: 
+ 65: # Initialize Variables
+ 66: init = tf.global_variables_initializer()
+ 67: sess.run(init)
+ 68: 
+ 69: # Start training loop
+ 70: train_loss = []
+ 71: train_acc = []
+ 72: test_acc = []
+ 73: for i in range(generations):
+ 74:     rand_index = np.random.choice(len(train_xdata), size=batch_size)
+ 75:     rand_x = train_xdata[rand_index]
+ 76:     rand_x = np.expand_dims(rand_x, 3)
+ 77:     rand_y = train_labels[rand_index]
+ 78:     train_dict = {x_input: rand_x, y_target: rand_y}
+ 79:     
+ 80:     sess.run(train_step, feed_dict=train_dict)
+ 81:     temp_train_loss, temp_train_preds = sess.run([loss, prediction], feed_dict=train_dict)
+ 82:     temp_train_acc = get_accuracy(temp_train_preds, rand_y)
+ 83:     
+ 84:     if (i+1) % eval_every == 0:
+ 85:         eval_index = np.random.choice(len(test_xdata), size=evaluation_size)
+ 86:         eval_x = test_xdata[eval_index]
+ 87:         eval_x = np.expand_dims(eval_x, 3)
+ 88:         eval_y = test_labels[eval_index]
+ 89:         test_dict = {eval_input: eval_x, eval_target: eval_y}
+ 90:         test_preds = sess.run(test_prediction, feed_dict=test_dict)
+ 91:         temp_test_acc = get_accuracy(test_preds, eval_y)
+ 92:         
+ 93:         # Record and print results
+ 94:         train_loss.append(temp_train_loss)
+ 95:         train_acc.append(temp_train_acc)
+ 96:         test_acc.append(temp_test_acc)
+ 97:         acc_and_loss = [(i+1), temp_train_loss, temp_train_acc, temp_test_acc]
+ 98:         acc_and_loss = [np.round(x, 2) for x in acc_and_loss]
+ 99:         print('Generation # {}. Train Loss: {:.2f}. Train Acc (Test Acc): {:.2f} ({:.2f})'.format(*acc_and_loss))
+100:     
+101:     
+102: # Matlotlib code to plot the loss and accuracies
+103: eval_indices = range(0, generations, eval_every)
+104: # Plot loss over time
+105: plt.plot(eval_indices, train_loss, 'k-')
+106: plt.title('Softmax Loss per Generation')
+107: plt.xlabel('Generation')
+108: plt.ylabel('Softmax Loss')
+109: plt.show()
+110: 
+111: # Plot train and test accuracy
+112: plt.plot(eval_indices, train_acc, 'k-', label='Train Set Accuracy')
+113: plt.plot(eval_indices, test_acc, 'r--', label='Test Set Accuracy')
+114: plt.title('Train and Test Accuracy')
+115: plt.xlabel('Generation')
+116: plt.ylabel('Accuracy')
+117: plt.legend(loc='lower right')
+118: plt.show()
+119: 
+120: # Plot some samples
+121: # Plot the 6 of the last batch results:
+122: actuals = rand_y[0:6]
+123: predictions = np.argmax(temp_train_preds, axis=1)[0:6]
+124: images = np.squeeze(rand_x[0:6])
+125: 
+126: Nrows = 2
+127: Ncols = 3
+128: for i in range(6):
+129:     plt.subplot(Nrows, Ncols, i+1)
+130:     plt.imshow(np.reshape(images[i], [28, 28]), cmap='Greys_r')
+131:     plt.title('Actual: ' + str(actuals[i]) + ' Pred: ' + str(predictions[i]),
+132:               fontsize=10)
+133:     frame = plt.gca()
+134:     frame.axes.get_xaxis().set_visible(False)
+135:     frame.axes.get_yaxis().set_visible(False)

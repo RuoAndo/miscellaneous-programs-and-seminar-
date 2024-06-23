@@ -1,0 +1,56 @@
+set(ur_res).
+%set(hyper_res).
+clear(back_sub).
+clear(demod_history).
+clear(print_kept).
+clear(print_given).
+%assign(max_mem, 9000).
+assign(min_bit_width, 8).
+
+list(usable).
+% Rules for building circuits.
+-P(x, v) | -P(y, v) | P($BIT_AND(x,y), v).
+-P(x, v) | -P(y, v) | P($BIT_OR(x,y), v).
+-P(x, v) | P($BIT_AND(11111111,$BIT_NOT(x)), append_inversion(v,x)).
+end_of_list.
+
+list(sos).
+P(00001111, v).  % input 1
+P(00110011, v).  % input 2
+P(01010101, v).  % input 3
+end_of_list.
+
+list(usable).
+% Denial of the goal.
+% -P(11110000, v) | -P(11001100, v) | -P(10101010, v).
+% -P(11001100, v) | -P(11111111, v) | -P(11111111, v).
+-P(11110000, v) | -P(10101010, v) | -P(11001100, v).
+%-P(01010101, v) | -P(11111111, v) | -P(11111111, v).
+%-P(00001111, v) | -P(11111111, v) | -P(11111111, v).
+%-P(11110000, v).
+end_of_list.
+
+list(demodulators).
+% The following pair of demodulators inserts an element y just before the
+% tail-variable.
+append_inversion([x1|x2],y) = [x1|append_inversion(x2,y)].
+$VAR(x) -> append_inversion(x,y) = [y|x].
+end_of_list.
+
+list(passive).
+% The following clause subsumes functions obtained with 3 (or more) inversions.
+P(x, [y1,y2,y3|y4]).
+%P(x, [y1,y2|y4]).
+end_of_list.
+
+% The following list of weight templates gives first priority to the
+% goal functions, regardless of the inversion list.  Recall that with
+% a multiliteral denial, all of the goals must be selected as given
+% clauses before a proof is found by hyper.  Without these templates,
+% the three goals can sit on sos for a long time, delaying a proof.
+
+weight_list(pick_given).
+weight(P(11110000, $(1)), -50).
+weight(P(11001100, $(1)), -50).
+weight(P(10101010, $(1)), -50).
+end_of_list.

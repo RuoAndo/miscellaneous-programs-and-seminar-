@@ -1,0 +1,18 @@
+set(hyper_res).
+assign(max_proofs,2).
+set(print_lists_at_end).
+
+list(usable).
+	-believe(x,p) | -believe(x,impl(p,q)) | believe(x,q).
+	-believe(x,p) | believe(x,believe(p)).
+	-KNIGHT(x,y) | -say(y,w) | believe(x,w).
+end_of_list.
+
+list(sos).
+	believe(A, -believe(A,P)).
+	say(B,P).
+	KNIGHT(A,B).
+end_of_list.
+
+list(passive).
+end_of_list.

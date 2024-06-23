@@ -1,0 +1,20 @@
+set(hyper_res).
+set(demod_inf).
+assign(max_proofs,2).
+set(print_lists_at_end).
+
+list(usable).
+        -believe(x,believe(x, knight(y))) | -believe(say(y,P(z))) | believe(x,P(z)).
+	-say(B,P(cure(Z))) | believe(say(B,P(cure(Z)))).
+        -believe(A,people(B,C)) | believe(A, believe(A,people(B,C))).
+	%-say(B,P(cure(Z))) | believe(say(B,P(cure(Z)))).
+end_of_list.
+
+list(sos).
+        believe(A,people(B,C)).
+        say(B,P(cure(Z))).
+end_of_list.
+
+list(demodulators).
+	people(x,y) = knight(y).
+end_of_list.

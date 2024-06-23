@@ -1,0 +1,38 @@
+set(hyper_res).
+set(para_from).
+set(para_into).
+%set(demod_inf).
+
+list(sos).
+%S*K*K(x).
+%S * x * y * z.
+
+n([S,K,K,x]). % | -n([S,K,S,x]).
+
+end_of_list.
+
+list(usable).
+
+-n([S,x,y,z]) | n([x,z,(y*z)]).
+%n([S,x,y,z]) = n([x,z,(y*z)]).
+%n([K,x,K*x]).
+
+-n([K,x,y]) | n([x]).
+
+%-n([S,x,y,z]) | -n([z]) | n([S,x,y,z],[I(z)]).
+
+-n([S,x,y,z]) | -n([z]) | n([S,x,y,z],[I(z)]).
+
+%-n([x]) | n(x).
+%S * x * y * z = x * z * (y * z).
+%S * x * y * z = S * x * (y * z).
+%S*K*K(x) = R. %x * y * (z(w)).
+%K(x) = W.
+%-(S * X * Y(z)) | X * Y * (Y(z)).
+
+end_of_list.
+
+list(passive).
+%-(x*z*y*z).
+-n([S,x,y,z],[I(z)]).
+end_of_list.

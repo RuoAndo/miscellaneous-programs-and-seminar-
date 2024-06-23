@@ -1,0 +1,32 @@
+set(hyper_res).
+set(demod_inf).
+assign(max_proofs,2).
+set(print_lists_at_end).
+
+list(usable).
+	-believe(x,p) | -believe(x,impl(p,q)) | believe(x,q).
+	-believe(x,p) | believe(x,believe(p)).
+	-believe(x,knight(y)) | -say(y,P(w)) | believe(x,P(w)).
+
+	%-believe(x,P(believe(x,P(y)))) | B.
+	-believe(x,P(believe(x,P(y)))) | believe(x,P(y)).
+
+	%believe(A,P(-believe(A,knight(B)))).
+	-believe(A,P(X)) | X.
+
+end_of_list.
+
+list(demodulators).
+	%believe(A,P(believe(A,P(-believe(A,knight(B)))))).
+	%believe(A,P(believe(A,P(-believe(A,knight(B)))))).
+        -believe(x,P(believe(x,P(y)))) = B.
+end_of_list.
+
+list(sos).
+        believe(A,knight(B)).
+	say(y,P(believe(A, P(-believe(A,knight(B)))))).
+end_of_list.
+
+list(passive).
+	%-B.
+end_of_list.
